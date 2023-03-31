@@ -14,7 +14,7 @@ const routes = [
     props: route => ({page: parseInt(route.query.page) || 1})
   },
   {
-    path: '/event/:id',
+    path: '/events/:id',
     name: 'EventLayout',
     props: true,
     component: EventLayout,
@@ -37,7 +37,13 @@ const routes = [
       },
     ]
   },
- 
+ {
+path: '/event/:afterEvent(.*)',
+redirect: to => {
+  return{ path: '/events/' + to.params.afterEvent } //captura todo lo que haya después de Event.
+}
+
+ },
   {
     path: '/about',
     name: 'About',
