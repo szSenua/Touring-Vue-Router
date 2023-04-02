@@ -27,7 +27,19 @@
           this.event = response.data
         })
         .catch(error => {
-          console.log(error)
+          if(error.response && error.response.status == 404){
+            this.$router.push({
+            name: '404Resource',
+            params: { resource: 'event' } //Si el evento no existe, carga 404
+          })
+
+          } else {
+            this.$router.push({
+              name: 'NetworkError' //Y si no, asume error de network
+            })
+          }
+
+          
         })
     }
   }
