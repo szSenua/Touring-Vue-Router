@@ -50,4 +50,8 @@ export default {
 h4 {
   font-size: 20px;
 }
+
+#nprogress .bar {
+background: #42b983 !important;
+}
 </style>
