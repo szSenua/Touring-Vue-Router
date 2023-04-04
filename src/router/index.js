@@ -93,7 +93,16 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  //al navegar, siempre mueva la página a la parte superior, excepto si volvemos hacia atrás, que se quedará en la posición inferior
+  scrollBehavior(){
+
+    if(savedPosition){
+      return savedPosition
+    } else {
+    return { top: 0 }
+    }
+  }
 })
 
 router.beforeEach(() => {
