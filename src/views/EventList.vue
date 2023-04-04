@@ -39,9 +39,9 @@ export default {
       totalEvents: 0
     }
   },
-  beforeRouteEnter(routeTo, routeFrom, next) {
-    
-    EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
+  async beforeRouteEnter(routeTo, routeFrom, next) {
+
+await EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then(response => {
         console.log(JSON.stringify(response))
         next(comp => {
