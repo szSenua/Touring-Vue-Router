@@ -4,28 +4,28 @@
     <EventCard v-for="event in events" :key="event.id" :event="event" />
 
     <div class="pagination">
-    <router-link
-    id="page-prev"
-    :to="{ name: 'EventList', query: { page: page - 1}}"
-    rel="prev"
-    v-if="page != 1">
-    &#60; Previous</router-link>
+      <router-link
+        id="page-prev"
+        :to="{ name: 'EventList', query: { page: page - 1 } }"
+        rel="prev"
+        v-if="page != 1"
+        >&#60; Previous</router-link
+      >
 
-  <router-link
-  id="page-next"
-    :to="{ name: 'EventList', query: { page: page + 1}}"
-    rel="next"
-    v-if="hasNextPage">
-  Next &#62;</router-link>
-</div>
-
+      <router-link
+        id="page-next"
+        :to="{ name: 'EventList', query: { page: page + 1 } }"
+        rel="next"
+        v-if="hasNextPage"
+        >Next &#62;</router-link
+      >
+    </div>
   </div>
 </template>
 
 <script>
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
-import { watchEffect } from 'vue' //función para reactive objects -> this.page
 
 export default {
   name: 'EventList',
@@ -39,24 +39,24 @@ export default {
       totalEvents: 0
     }
   },
-  created() {
-    watchEffect(() => {
-      this.events = null //limpia los eventos en la página, así el usuario sabe que la API ha sido llamada.
-    EventService.getEvents(2, this.page) //2 eventos por página, y envia a la página actual
+  beforeRouteEnter(routeTo, routeFrom, next) {
+    
+    EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then(response => {
-        this.events = response.data
-        this.totalEvents = response.headers['x-total-count']
+        console.log(JSON.stringify(response))
+        next(comp => {
+          comp.events = response.data
+          comp.totalEvents = response.headers['x-total-count']
+        })
       })
       .catch(() => {
-        this.$router.push({
-              name: 'NetworkError' 
-            })
+        next({ name: 'NetworkError' })
       })
-    })
+    
   },
   computed: {
-    hasNextPage(){
-      var totalPages = Math.ceil(this.totalEvents / 2) //Encuentra el número de páginas
+    hasNextPage() {
+      var totalPages = Math.ceil(this.totalEvents / 2)
       return this.page < totalPages
     }
   }
@@ -69,7 +69,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-
 .pagination {
   display: flex;
   width: 290px;
@@ -79,11 +78,9 @@ export default {
   text-decoration: none;
   color: #2c3e50;
 }
-
 #page-prev {
   text-align: left;
 }
-
 #page-next {
   text-align: right;
 }
