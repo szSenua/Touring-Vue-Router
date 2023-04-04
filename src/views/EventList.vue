@@ -16,7 +16,7 @@
 <script>
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
-import NProgress from 'nprogress'
+
 
 export default {
   name: 'EventList',
@@ -32,7 +32,7 @@ export default {
   },
 
   async beforeRouteEnter(routeTo, routeFrom, next) {
-    NProgress.start()
+   
     await EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then(response => {
         //console.log(JSON.stringify(response)) testing
@@ -43,13 +43,11 @@ export default {
       })
       .catch(() => {
         next({ name: 'NetworkError' })
-      }).finally(() => {
-        NProgress.done() //aunque la API tenga éxito o no, la barra de progreso termina
       })
   },
 
   async beforeRouteUpdate(routeTo) {
-    NProgress.start()
+    
     await EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then(response => {
         //console.log(JSON.stringify(response)) testing
@@ -58,11 +56,9 @@ export default {
       })
       .catch(() => {
         return{ name: 'NetworkError' }
-      }).finally(() => {
-        NProgress.done() //aunque la API tenga éxito o no, la barra de progreso termina
       })
   },
-  
+
   computed: {
     hasNextPage() {
       var totalPages = Math.ceil(this.totalEvents / 2)
