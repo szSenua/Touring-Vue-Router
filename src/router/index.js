@@ -101,7 +101,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   //al navegar, siempre mueva la página a la parte superior, excepto si volvemos hacia atrás, que se quedará en la posición inferior
-  scrollBehavior(){
+  scrollBehavior(to, from, savedPosition){
 
     if(savedPosition){
       return savedPosition
