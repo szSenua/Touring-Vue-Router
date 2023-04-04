@@ -11,6 +11,12 @@ import nProgress from 'nprogress'
 import EventService from '@/services/EventService.js'
 import GStore from '@/store'
 
+/**
+ * Example Lazy loading
+ * 
+ * const Uploader = () => import (webpackChunkName: "creator" '../views/Uploader.vue') Con esto decimos que lo cargue cuando sea necesario.
+ */
+
 const routes = [
   {
     path: '/',
